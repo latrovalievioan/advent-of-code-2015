@@ -6,6 +6,13 @@ main = do
   s <- readFile "input1"
   let input = init s
   
-  let (r, l) = foldl' (\(fs, sn) curr -> if curr == '(' then (fs + 1, sn) else (fs, sn + 1 )) (0, 0) input
+  let test = "()())"
+  
+  let solution = foldl' step (0, 0, 0) input
 
-  print $ (r - l)
+  print solution
+
+  where
+    step (acc, i, found) curr
+      | curr == '(' = (acc + 1, i + 1, found)
+      | otherwise = if (acc == -1 && found == 0) then (acc - 1, i + 1, i) else (acc - 1, i + 1, found)
